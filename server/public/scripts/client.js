@@ -11,6 +11,7 @@ function changeSongRank() {
     console.log('clicked up or down');
     let voteDirection = $(this).text(); // using text of button clicked.
     console.log(voteDirection);
+    // set the id to the data-id on the button
     let id = $(this).data('id');
 
     //AJAX PUT

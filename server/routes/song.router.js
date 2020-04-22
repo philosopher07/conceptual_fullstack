@@ -28,7 +28,7 @@ pool.on('error', (error) => {
 // TODO - GET all songs 
 router.get( '/', ( req, res )=>{
   console.log( 'in /songs GET' );
-  let queryText = `SELECT * FROM "songs";`
+  let queryText = `SELECT * FROM "songs" ORDER BY "rank" ASC;`
   // GO TO DB, EXECUTE QUERY, SEND BACK ROWS
   pool.query(queryText)
   .then((result) => {
