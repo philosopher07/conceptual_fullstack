@@ -3,7 +3,30 @@ $( document ).ready( onReady );
 function onReady(){
     $( '#btn-add-track' ).on( 'click', handleClick );
     $( '#out-tracks' ).on( 'click', '.deleteSongButton', deleteSong );
+    $('#out-tracks').on ('click', '.changeSongRank', changeSongRank);
     getSongs();
+}
+
+function changeSongRank() {
+    console.log('clicked up or down');
+    let voteDirection = $(this).text(); // using text of button clicked.
+    console.log(voteDirection);
+    let id = $(this).data('id');
+
+    //AJAX PUT
+    $.ajax({
+        type: 'PUT',
+        url: `/song/${id}`,
+        data: { // best practice to put in object
+            direction: voteDirection
+        }
+    }).then(function (response) {
+        console.log(response);
+        getSongs();
+    }).catch(function (error) {
+        console.log(error);        
+        alert('error in PUT /song')
+    })
 }
 
 function handleClick( event ) {
@@ -84,7 +107,10 @@ function render( songArray ) {
                     <td>${ song.artist }</td>
                     <td>${ song.track }</td>
                     <td>${ formatDate( song.published ) }</td>
-                    <td>${ song.rank } <button class="deleteSongButton" data-id=${ song.id }>Delete</button></td>
+                    <td>${ song.rank } 
+                        <button class="changeSongRank" data-id=${song.id}>UP</button>
+                        <button class="changeSongRank" data-id=${song.id}>DOWN</button>
+                        <button class="deleteSongButton" data-id=${ song.id }>Delete</button></td>
                 </tr>` );
     } 
 }

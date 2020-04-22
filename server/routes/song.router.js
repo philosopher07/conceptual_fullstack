@@ -74,5 +74,22 @@ router.delete( '/:id', ( req, res )=>{
     res.sendStatus( 500 );
   })
 }) // end DELETE
+//localhost:5000/song/4
+router.put('/:id',(req, res)=>{
+  console.log('in PUT /song',req.params.id);
+  console.log('put body', req.body)
+  let queryString;
+if(req.body.direction === 'UP'){
+  queryString = `UPDATE "songs" SET "rank" = "rank" + 1 WHERE "id" = $1;`
+} else if (req.body.direction === 'DOWN'){
+  queryString = `UPDATE "songs" SET "rank" = "rank" - 1 WHERE "id" = $1;`
+}
+pool.query(queryString, [req.params.id])
+.then((result)=>{
+  res.sendStatus(200);
+}).catch((error)=>{
+  res.sendStatus(500);
+})
+})
 
 module.exports = router;
